@@ -6,41 +6,53 @@ board = [[] for y in range(h)]
 for i in range(h):
     board[i] = list(map(int, input().split()))
 
-print(*board, sep='\n')
-
 total = 0
 
 # Bottom of board
-total += w**2
+total += w*h
 
 # Top of board
-total += w**2
+total += w*h
 
 # Differences in heights of cubes
-for i in range(w-1):
-    for j in range(w-1):
-        # To the right
-        if (board[i][j] < board[i][j+1]):
-            total += board[i][j + 1] - board[i][j]
-        # To the left
 
-        # Below
-        if (board[i][j] < board[i + 1][j]):
-            total += board[i + 1][j] - board[i][j]
-        # Above
+# Right
+for row in board:
+    for i in range(len(row) - 1):
+        if row[i] < row[i + 1]:
+            total+=row[i + 1] - row[i]
+
+# Left
+for row in board:
+    for i in range(len(row) - 1, 0, -1):
+        if row[i] < row[i - 1]:
+            total += row[i - 1] - row[i]
+
+# Below
+for i in range(h - 1):
+    for j in range(w):
+        if board[i][j] < board[i+1][j]:
+            total += board[i+1][j] - board[i][j]
+
+# Above
+for i in range(h - 1, 0, -1):
+    for j in range(w):
+        if board[i][j] < board[i-1][j]:
+            total+=board[i-1][j] - board[i][j]
         
 
-# Add the sides of the board
 
-for i in range(w):
-    # Top / Bottom
-    total += board[0][i]
-    total += board[-1][i]
+# Adds the top / bottom sides of the board
+total += sum(board[0])
+total += sum(board[-1])
 
+
+# Adds the left / right sides of the board
+for i in range(h):
     # Left / Right
     total += board[i][0]
     total += board[i][-1]
-        
+
         
 
 print(total)
